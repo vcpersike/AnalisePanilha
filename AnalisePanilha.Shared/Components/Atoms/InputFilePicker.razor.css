@@ -1,0 +1,22 @@
+﻿.file-picker-container {
+    margin-bottom: 1rem;
+}
+
+.has-file {
+    background-color: #e8f4fc;
+}
+
+.file-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-placeholder {
+    color: #6c757d;
+}
+.validation-error {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}

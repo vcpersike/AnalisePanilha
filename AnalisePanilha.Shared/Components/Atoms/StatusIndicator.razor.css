@@ -1,0 +1,22 @@
+﻿.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-different {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.status-equal {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-icon {
+    margin-right: 0.25rem;
+}

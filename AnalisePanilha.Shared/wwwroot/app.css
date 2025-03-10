@@ -1,0 +1,79 @@
+.comparison-results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.comparison-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr auto;
+    align-items: center;
+    padding: 12px;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+    gap: 16px;
+}
+
+    .comparison-item.different {
+        background-color: #fff8e1;
+        border-left: 4px solid #f57c00;
+    }
+
+    .comparison-item.equal {
+        background-color: #f1f8e9;
+        border-left: 4px solid #43a047;
+    }
+
+.location-label {
+    font-weight: 600;
+    color: #424242;
+}
+
+.values-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.value-label {
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+    .value-label.value1 {
+        background-color: #e3f2fd;
+        border: 1px solid #bbdefb;
+    }
+
+    .value-label.value2 {
+        background-color: #e8f5e9;
+        border: 1px solid #c8e6c9;
+    }
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.85em;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+    .status-indicator.different {
+        background-color: #ffebee;
+        color: #d32f2f;
+    }
+
+    .status-indicator.equal {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+.material-icons {
+    font-size: 18px;
+}

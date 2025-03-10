@@ -1,0 +1,46 @@
+﻿@namespace AnalisePanilha.Shared.Components.Organisms
+@inherits ExportResultViewBase
+@using AnalisePanilha.Shared.Components.Atoms
+@using AnalisePanilha.Shared.Components.Atoms.Enums
+
+<div class="export-container">
+    <h4>Exportar Resultados</h4>
+
+    <div class="export-actions">
+        <ButtonDefault OnClick="OnExport"
+                       IsDisabled="!HasResults || IsExporting"
+                       IsLoading="IsExporting"
+                       Type="ButtonType.Success">
+            Exportar para Excel
+        </ButtonDefault>
+    </div>
+    @if (!HasResults)
+    {
+        <div class="alert alert-info mt-3">
+            Realize a comparação dos arquivos primeiro para habilitar a exportação.
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(ExportedFilePath))
+    {
+        <div class="export-success">
+            <div class="alert alert-success">
+                Arquivo exportado com sucesso!
+            </div>
+            <div class="file-info">
+                <span class="file-path">@ExportedFilePath</span>
+                <ButtonDefault OnClick="OnOpenFile"
+                               Type="ButtonType.Info">
+                    Abrir Arquivo
+                </ButtonDefault>
+            </div>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="alert alert-danger mt-3">
+            @ErrorMessage
+        </div>
+    }
+</div>

@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@inherits InputFilePickerBase
+
+<div class="file-picker-container">
+    <div class="input-group">
+        <label class="input-group-text">@Label</label>
+        <div class="form-control @(string.IsNullOrEmpty(FileName) ? "" : "has-file")">
+            @if (string.IsNullOrEmpty(FileName))
+            {
+                <span class="file-placeholder">Nenhum arquivo selecionado</span>
+            }
+            else
+            {
+                <span class="file-name">@FileName</span>
+            }
+        </div>
+        <button class="btn btn-outline-secondary" type="button" @onclick="BrowseFile">
+            Selecionar
+        </button>
+    </div>
+    <InputFile id="@Id" OnChange="OnFileSelected" class="d-none" accept=".xlsx,.xls" />
+
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <div class="validation-error mt-2 text-danger">
+            <small>@ValidationMessage</small>
+        </div>
+    }
+</div>

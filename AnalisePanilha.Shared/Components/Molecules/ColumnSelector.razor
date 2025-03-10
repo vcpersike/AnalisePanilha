@@ -1,0 +1,57 @@
+﻿@namespace AnalisePanilha.Shared.Components.Molecules
+@inherits ColumnSelectorBase
+
+<div class="column-selector">
+    <h4>Selecionar Colunas para Comparação</h4>
+
+    <div class="column-inputs">
+        <div class="form-group">
+            <label for="file1Column">Coluna do Arquivo 1:</label>
+            <input type="text"
+                   class="form-control"
+                   id="file1Column"
+                   placeholder="Ex: A ou 1"
+                   @bind="File1Column" />
+            <small class="form-text text-muted">Digite a letra da coluna (A, B, C...) ou o número (1, 2, 3...)</small>
+        </div>
+
+        <div class="form-group">
+            <label for="file2Column">Coluna do Arquivo 2:</label>
+            <input type="text"
+                   class="form-control"
+                   id="file2Column"
+                   placeholder="Ex: A ou 1"
+                   @bind="File2Column" />
+            <small class="form-text text-muted">Digite a letra da coluna (A, B, C...) ou o número (1, 2, 3...)</small>
+        </div>
+    </div>
+
+    <div class="column-actions">
+        <button type="button"
+                class="btn btn-primary"
+                @onclick="ApplySelection"
+                disabled="@(!IsValid)">
+            Aplicar Seleção de Colunas
+        </button>
+
+        <button type="button"
+                class="btn btn-outline-secondary"
+                @onclick="ClearSelection">
+            Limpar Seleção
+        </button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ValidationMessage))
+    {
+        <div class="alert alert-warning mt-3">
+            @ValidationMessage
+        </div>
+    }
+
+    @if (HasActiveSelection)
+    {
+        <div class="active-selection alert alert-info mt-3">
+            <p><strong>Comparação configurada:</strong> Coluna @ActiveColumnPair.File1Column do Arquivo 1 com Coluna @ActiveColumnPair.File2Column do Arquivo 2</p>
+        </div>
+    }
+</div>

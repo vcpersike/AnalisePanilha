@@ -1,0 +1,20 @@
+﻿@inherits ComparisonItemBase
+
+<div class="comparison-item @(IsDifferent ? "different" : "equal")">
+    <div class="location">
+        <LabelStyled Text="@($"Linha {Row}, Coluna {Column}")" Class="location-label" />
+    </div>
+    <div class="values">
+        <div class="value-container">
+            <span class="value-label">Arquivo 1:</span>
+            <span class="value-text">@(string.IsNullOrEmpty(Value1) ? "-" : Value1)</span>
+        </div>
+        <div class="value-container">
+            <span class="value-label">Arquivo 2:</span>
+            <span class="value-text">@(string.IsNullOrEmpty(Value2) ? "-" : Value2)</span>
+        </div>
+    </div>
+    <div class="status">
+        <StatusIndicator IsDifferent="@IsDifferent" />
+    </div>
+</div>

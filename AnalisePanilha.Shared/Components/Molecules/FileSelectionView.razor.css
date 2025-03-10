@@ -1,0 +1,21 @@
+﻿.file-selection-container {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.file-inputs {
+    margin: 1.5rem 0;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #495057;
+}

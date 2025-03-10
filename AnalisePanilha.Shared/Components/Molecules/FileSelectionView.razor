@@ -1,0 +1,38 @@
+﻿@namespace AnalisePanilha.Shared.Components.Organisms
+@inherits FileSelectionViewBase
+@using AnalisePanilha.Shared.Components.Atoms
+@using AnalisePanilha.Shared.Components.Atoms.Enums
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="file-selection-container">
+    <h4>Selecione os arquivos Excel para comparação</h4>
+    <div class="file-inputs">
+        <InputFilePicker Label="Arquivo 1"
+                         FileName="@FileName1"
+                         OnChange="@(e => OnFileSelected(e, 1))"
+                         OnValidationError="@HandleValidationError" />
+        <InputFilePicker Label="Arquivo 2"
+                         FileName="@FileName2"
+                         OnChange="@(e => OnFileSelected(e, 2))"
+                         OnValidationError="@HandleValidationError" />
+    </div>
+    <div class="action-buttons">
+        <ButtonDefault OnClick="OnCompare"
+                       IsDisabled="!CanCompare || IsComparing"
+                       IsLoading="IsComparing"
+                       Type="ButtonType.Primary">
+            Comparar Arquivos
+        </ButtonDefault>
+        <ButtonDefault OnClick="OnReset"
+                       IsDisabled="IsComparing"
+                       Type="ButtonType.Secondary">
+            Limpar
+        </ButtonDefault>
+    </div>
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <div class="alert alert-danger mt-3">
+            @ErrorMessage
+        </div>
+    }
+</div>

@@ -1,0 +1,67 @@
+﻿@page "/"
+@inherits ExcelComparisonBase
+
+<div class="excel-comparison-container">
+    <div class="app-header">
+        <h2>Análise de Planilhas Excel</h2>
+        <p class="lead">Compare dois arquivos Excel e identifique as diferenças entre células</p>
+
+        <div class="debug-info">
+            <p>Arquivo 1: @(string.IsNullOrEmpty(ViewModel.FileName1) ? "Não selecionado" : ViewModel.FileName1)</p>
+            <p>Arquivo 2: @(string.IsNullOrEmpty(ViewModel.FileName2) ? "Não selecionado" : ViewModel.FileName2)</p>
+            <p>Resultados: @(ViewModel.HasResults ? $"{ViewModel.ComparisonResults.Count} células, {ViewModel.ComparisonResults.Count(r => r.IsDifferent)} diferentes" : "Nenhum")</p>
+        </div>
+    </div>
+
+    <FileSelectionView FileName1="@ViewModel.FileName1"
+                       FileName2="@ViewModel.FileName2"
+                       CanCompare="@ViewModel.CanCompare"
+                       IsComparing="@ViewModel.IsComparing"
+                       ErrorMessage="@ViewModel.ErrorMessage"
+                       OnFile1Selected="@HandleFile1Selected"
+                       OnFile2Selected="@HandleFile2Selected"
+                       OnCompare="@HandleCompare"
+                       OnReset="@HandleReset"
+                       OnError="@HandleError" />
+
+    <ColumnSelector File1Columns="@ViewModel.File1Columns"
+                    File2Columns="@ViewModel.File2Columns"
+                    OnApplyMappings="@HandleApplyColumnMappings" />
+
+    @if (ViewModel.ComparisonResults != null && ViewModel.ComparisonResults.Any())
+    {
+        <div class="results-debug-info">
+            <p>Resultados carregados: @ViewModel.ComparisonResults.Count</p>
+        </div>
+
+        <ComparisonResultsList Results="@ViewModel.ComparisonResults" />
+
+        <ExportResultsView HasResults="@ViewModel.HasResults"
+                           IsExporting="@ViewModel.IsExporting"
+                           ExportedFilePath="@ViewModel.ExportedFilePath"
+                           ErrorMessage="@ViewModel.ErrorMessage"
+                           OnExport="@HandleExport"
+                           OnOpenFile="@HandleOpenFile" />
+    }
+    else if (ViewModel.IsComparing)
+    {
+        <div class="loading-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+            <div class="loading-text">Comparando arquivos, por favor aguarde...</div>
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(ViewModel.ErrorMessage))
+    {
+        <div class="alert alert-danger mt-4">
+            @ViewModel.ErrorMessage
+        </div>
+    }
+    else
+    {
+        <div class="no-results-message">
+            <p>Selecione os arquivos e clique em "Comparar" para ver os resultados.</p>
+        </div>
+    }
+</div>

@@ -1,0 +1,22 @@
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+.content {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .content {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+}

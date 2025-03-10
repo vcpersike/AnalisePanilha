@@ -1,0 +1,9 @@
+﻿@inherits ButtonDefaultBase
+
+<button class="@CssClass" @onclick="OnClick" disabled="@IsDisabled">
+    @if (IsLoading)
+    {
+        <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+    }
+    @ChildContent
+</button>

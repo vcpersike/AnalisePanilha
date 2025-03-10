@@ -1,0 +1,67 @@
+﻿@namespace AnalisePanilha.Shared.Components.Organisms
+@inherits ComparisonResultsListBase
+@using AnalisePanilha.Shared.Components.Molecules
+
+<div class="comparison-results">
+    <div class="results-header">
+        <h4>Resultados da Comparação</h4>
+        <div class="results-summary">
+            <div class="summary-item">
+                <span class="summary-label">Total:</span>
+                <span class="summary-value">@Results.Count</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Diferentes:</span>
+                <span class="summary-value">@DifferentCount</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Iguais:</span>
+                <span class="summary-value">@(Results.Count - DifferentCount)</span>
+            </div>
+        </div>
+    </div>
+    <div class="filters">
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="showDifferencesOnly"
+                   @bind="ShowDifferencesOnly" />
+            <label class="form-check-label" for="showDifferencesOnly">
+                Mostrar apenas diferenças
+            </label>
+        </div>
+    </div>
+    <div class="results-debug">
+        <p>Resultados recebidos: @Results.Count</p>
+        <p>Filtrados: @FilteredResults.Count</p>
+    </div>
+    <div class="results-container">
+        @if (FilteredResults.Any())
+        {
+            @foreach (var result in FilteredResults.Take(100)) // Limite para evitar problemas de performance
+            {
+                <ComparisonResultItem Row="@result.Row"
+                                      Column="@result.Column"
+                                      Value1="@result.Value1"
+                                      Value2="@result.Value2"
+                                      IsDifferent="@result.IsDifferent" />
+            }
+            @if (FilteredResults.Count > 100)
+            {
+                <div class="more-results-message">
+                    Mostrando 100 de @FilteredResults.Count resultados. Utilize filtros para refinar.
+                </div>
+            }
+        }
+        else if (Results.Any())
+        {
+            <div class="no-differences">
+                Não foram encontradas diferenças entre os arquivos.
+            </div>
+        }
+        else
+        {
+            <div class="no-results">
+                Nenhum resultado de comparação disponível.
+            </div>
+        }
+    </div>
+</div>
