@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnalisePanilha.Shared.Services.Interfaces
+namespace AnalisePanilha.Shared.Services
 {
     public interface IExcelComparisonService
     {

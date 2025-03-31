@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AnalisePanilha.Shared.Components.Molecules;
 using AnalisePanilha.Shared.Models;
-using AnalisePanilha.Shared.Services.Interfaces;
+using AnalisePanilha.Shared.Services;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -33,7 +33,6 @@ namespace AnalisePanilha.Shared.ViewModels
         public bool CanCompare => !string.IsNullOrEmpty(FilePath1) && !string.IsNullOrEmpty(FilePath2);
         public bool HasResults => ComparisonResults != null && ComparisonResults.Count > 0;
 
-        // Eventos para notificar a UI sobre mudanças
         public event Action OnStateChanged;
 
         public ExcelComparisonViewModel(IExcelComparisonService excelComparisonService, NavigationManager navigationManager)
@@ -47,10 +46,8 @@ namespace AnalisePanilha.Shared.ViewModels
         {
             try
             {
-                // Limite de tamanho (10MB)
                 const long maxFileSize = 100 * 1024 * 1024;
 
-                // Verificar tamanho
                 if (e.File.Size > maxFileSize)
                 {
                     ErrorMessage = $"O arquivo excede o limite de tamanho (10MB): {e.File.Name}";
@@ -58,10 +55,8 @@ namespace AnalisePanilha.Shared.ViewModels
                     return;
                 }
 
-                // Criar um caminho temporário para salvar o arquivo
                 string tempPath = Path.Combine(Path.GetTempPath(), $"excel_temp_{Guid.NewGuid()}.xlsx");
 
-                // Salvar o arquivo
                 await using (var stream = File.Create(tempPath))
                 {
                     await e.File.OpenReadStream(maxFileSize).CopyToAsync(stream);
@@ -78,7 +73,6 @@ namespace AnalisePanilha.Shared.ViewModels
                     FileName2 = e.File.Name;
                 }
 
-                // Após selecionar os arquivos, tente carregar as informações das colunas
                 if (!string.IsNullOrEmpty(FilePath1) && !string.IsNullOrEmpty(FilePath2))
                 {
                     await LoadColumnInfo();
@@ -104,13 +98,12 @@ namespace AnalisePanilha.Shared.ViewModels
                 File1Columns.Clear();
                 File2Columns.Clear();
 
-                // Carregar colunas do primeiro arquivo
                 using (var workbook = new XLWorkbook(FilePath1))
                 {
                     var worksheet = workbook.Worksheet(1);
                     var headerRow = worksheet.Row(1);
 
-                    int colIndex = 1; // Excel é 1-based para colunas
+                    int colIndex = 1;
                     foreach (var cell in headerRow.CellsUsed())
                     {
                         string columnName = cell.Value.ToString();
@@ -119,7 +112,6 @@ namespace AnalisePanilha.Shared.ViewModels
                     }
                 }
 
-                // Carregar colunas do segundo arquivo
                 using (var workbook = new XLWorkbook(FilePath2))
                 {
                     var worksheet = workbook.Worksheet(1);
@@ -146,7 +138,6 @@ namespace AnalisePanilha.Shared.ViewModels
 
         private string GetExcelColumnName(int columnNumber)
         {
-            // Verificação de segurança
             if (columnNumber <= 0)
                 return string.Empty;
 
@@ -181,7 +172,6 @@ namespace AnalisePanilha.Shared.ViewModels
 
                 Console.WriteLine($"Iniciando comparação entre arquivos: {FileName1} e {FileName2}");
 
-                // Se houver colunas selecionadas, faça uma comparação específica
                 if (ActiveColumnPair != null &&
                     !string.IsNullOrEmpty(ActiveColumnPair.File1Column) &&
                     !string.IsNullOrEmpty(ActiveColumnPair.File2Column))
@@ -195,7 +185,6 @@ namespace AnalisePanilha.Shared.ViewModels
                 }
                 else
                 {
-                    // Comparação normal de todos os arquivos
                     ComparisonResults = await _excelComparisonService.CompareExcelFiles(FilePath1, FilePath2);
                 }
 
@@ -260,7 +249,6 @@ namespace AnalisePanilha.Shared.ViewModels
             NotifyStateChanged();
         }
 
-        // Método adicional para carregar arquivos específicos (para testes/demonstração)
         public void LoadSampleFiles(string path1, string path2)
         {
             if (File.Exists(path1) && File.Exists(path2))
@@ -270,7 +258,7 @@ namespace AnalisePanilha.Shared.ViewModels
                 FileName1 = Path.GetFileName(path1);
                 FileName2 = Path.GetFileName(path2);
                 ErrorMessage = null;
-                LoadColumnInfo().Wait(); // Carrega as colunas
+                LoadColumnInfo().Wait();
                 NotifyStateChanged();
             }
             else
@@ -280,7 +268,6 @@ namespace AnalisePanilha.Shared.ViewModels
             }
         }
 
-        // Método para comparar arquivos específicos diretamente
         public async Task CompareSpecificFiles(string path1, string path2)
         {
             try
@@ -308,7 +295,7 @@ namespace AnalisePanilha.Shared.ViewModels
                 FileName1 = Path.GetFileName(path1);
                 FileName2 = Path.GetFileName(path2);
 
-                await LoadColumnInfo(); // Carrega as colunas
+                await LoadColumnInfo();
 
                 if (ActiveColumnPair != null &&
                     !string.IsNullOrEmpty(ActiveColumnPair.File1Column) &&

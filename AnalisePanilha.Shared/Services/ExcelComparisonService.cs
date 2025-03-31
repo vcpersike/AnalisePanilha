@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AnalisePanilha.Shared.Models;
-using AnalisePanilha.Shared.Services.Interfaces;
 using System.Runtime.InteropServices;
 
 namespace AnalisePanilha.Shared.Services
@@ -18,7 +17,6 @@ namespace AnalisePanilha.Shared.Services
 
             var results = new List<CellComparisonResult>();
 
-            // Verificação de existência dos arquivos
             if (!File.Exists(filePath1))
             {
                 Console.WriteLine($"ERRO: Arquivo não encontrado: {filePath1}");
@@ -51,8 +49,7 @@ namespace AnalisePanilha.Shared.Services
 
                     Console.WriteLine($"Dimensões: {rowCount} linhas x {colCount} colunas");
 
-                    // Para evitar processamento excessivo, limite as células a comparar
-                    int maxCellsToProcess = 10000; // Ajuste este número conforme necessário
+                    int maxCellsToProcess = 10000;
                     int cellsProcessed = 0;
 
                     for (int row = 1; row <= rowCount && cellsProcessed < maxCellsToProcess; row++)
@@ -99,24 +96,20 @@ namespace AnalisePanilha.Shared.Services
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 $"ComparisonResults_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx");
 
-            // Usar Task.Run para operações bloqueantes de IO
             await Task.Run(() => {
                 using var workbook = new XLWorkbook();
                 var worksheet = workbook.Worksheets.Add("Resultados");
 
-                // Cabeçalhos
                 worksheet.Cell(1, 1).Value = "Linha";
                 worksheet.Cell(1, 2).Value = "Coluna";
                 worksheet.Cell(1, 3).Value = "Valor no Arquivo 1";
                 worksheet.Cell(1, 4).Value = "Valor no Arquivo 2";
                 worksheet.Cell(1, 5).Value = "Status";
 
-                // Estilizar cabeçalhos
                 var headerRange = worksheet.Range(1, 1, 1, 5);
                 headerRange.Style.Font.Bold = true;
                 headerRange.Style.Fill.BackgroundColor = XLColor.LightGray;
 
-                // Preencher dados
                 int row = 2;
                 foreach (var result in results)
                 {
@@ -126,7 +119,6 @@ namespace AnalisePanilha.Shared.Services
                     worksheet.Cell(row, 4).Value = result.Value2;
                     worksheet.Cell(row, 5).Value = result.IsDifferent ? "Diferente" : "Igual";
 
-                    // Destacar as diferenças
                     if (result.IsDifferent)
                     {
                         worksheet.Cell(row, 5).Style.Fill.BackgroundColor = XLColor.LightPink;
@@ -139,10 +131,8 @@ namespace AnalisePanilha.Shared.Services
                     row++;
                 }
 
-                // Auto-ajustar colunas
                 worksheet.Columns().AdjustToContents();
 
-                // Salvar
                 workbook.SaveAs(filePath);
             });
 
@@ -161,12 +151,10 @@ namespace AnalisePanilha.Shared.Services
                     var worksheet1 = workbook1.Worksheet(1);
                     var worksheet2 = workbook2.Worksheet(1);
 
-                    // Determinar o número de linhas para processar (a maior entre os dois arquivos)
                     int lastRow1 = worksheet1.LastRowUsed().RowNumber();
                     int lastRow2 = worksheet2.LastRowUsed().RowNumber();
                     int maxRows = Math.Max(lastRow1, lastRow2);
 
-                    // Comparar cada linha nas colunas especificadas
                     for (int rowIndex = 1; rowIndex <= maxRows; rowIndex++)
                     {
                         var cell1 = worksheet1.Cell($"{column1}{rowIndex}");
@@ -180,7 +168,7 @@ namespace AnalisePanilha.Shared.Services
                         results.Add(new CellComparisonResult
                         {
                             Row = rowIndex,
-                            Column = cell1.Address.ColumnNumber, // Ou poderia ser qualquer outro identificador de coluna
+                            Column = cell1.Address.ColumnNumber,
                             Value1 = value1,
                             Value2 = value2,
                             IsDifferent = isDifferent

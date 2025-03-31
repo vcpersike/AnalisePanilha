@@ -1,6 +1,5 @@
 ﻿using AnalisePanilha.Services;
 using AnalisePanilha.Shared.Services;
-using AnalisePanilha.Shared.Services.Interfaces;
 using AnalisePanilha.Shared.ViewModels;
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +17,6 @@ namespace AnalisePanilha
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
-            // Add device-specific services used by the AnalisePanilha.Shared project
             builder.Services.AddSingleton<IFormFactor, FormFactor>();
             builder.Services.AddSingleton<IExcelComparisonService, ExcelComparisonService>();
             builder.Services.AddTransient<ExcelComparisonViewModel>();

@@ -1,11 +1,6 @@
 ﻿using AnalisePanilha.Shared.ViewModels;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AnalisePanilha.Shared.Components.Molecules;
 
 namespace AnalisePanilha.Shared.Pages
@@ -29,8 +24,7 @@ namespace AnalisePanilha.Shared.Pages
         protected override async Task OnInitializedAsync()
         {
             Console.WriteLine("ExcelComparison: OnInitializedAsync");
-            // Você pode descomentar isto para testes, mas mantenha comentado para produção
-            // await LoadSampleFiles();
+           
         }
 
         protected async Task HandleFile1Selected(InputFileChangeEventArgs e)
@@ -38,7 +32,6 @@ namespace AnalisePanilha.Shared.Pages
             Console.WriteLine($"Arquivo 1 selecionado: {e.File.Name}");
             await ViewModel.HandleFileSelection(e, 1);
 
-            // Após selecionar ambos os arquivos, carregue as informações das colunas
             if (!string.IsNullOrEmpty(ViewModel.FileName1) && !string.IsNullOrEmpty(ViewModel.FileName2))
             {
                 await ViewModel.LoadColumnInfo();
@@ -50,7 +43,6 @@ namespace AnalisePanilha.Shared.Pages
             Console.WriteLine($"Arquivo 2 selecionado: {e.File.Name}");
             await ViewModel.HandleFileSelection(e, 2);
 
-            // Após selecionar ambos os arquivos, carregue as informações das colunas
             if (!string.IsNullOrEmpty(ViewModel.FileName1) && !string.IsNullOrEmpty(ViewModel.FileName2))
             {
                 await ViewModel.LoadColumnInfo();
@@ -78,12 +70,10 @@ namespace AnalisePanilha.Shared.Pages
         protected async Task HandleOpenFile()
         {
             Console.WriteLine("Botão Abrir Arquivo clicado");
-            // Implementar a lógica para abrir o arquivo
         }
 
         protected async Task LoadSampleFiles()
         {
-            // Método para carregar arquivos de exemplo durante o desenvolvimento
             Console.WriteLine("Carregando arquivos de exemplo");
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             await ViewModel.CompareSpecificFiles(
@@ -92,11 +82,9 @@ namespace AnalisePanilha.Shared.Pages
             );
         }
 
-        // Implementação do método HandleError referenciado no Razor
         protected void HandleError(string errorMessage)
         {
             Console.WriteLine($"Erro de validação: {errorMessage}");
-            // O StateHasChanged não é necessário aqui porque o ViewModel já dispara um evento OnStateChanged
         }
         protected void HandleApplyColumnMappings(ColumnPair columnPair)
         {
