@@ -1,6 +1,7 @@
 ﻿using AnalisePanilha.Services;
 using AnalisePanilha.Shared.Services;
 using AnalisePanilha.Shared.ViewModels;
+using AnalisePanilha.Web.Services;
 using Microsoft.Extensions.Logging;
 
 namespace AnalisePanilha
@@ -18,7 +19,7 @@ namespace AnalisePanilha
                 });
 
             builder.Services.AddSingleton<IFormFactor, FormFactor>();
-            builder.Services.AddSingleton<IExcelComparisonService, ExcelComparisonService>();
+            builder.Services.AddSingleton<IExcelComparisonService, ExcelComparisonServiceMaui>();
             builder.Services.AddTransient<ExcelComparisonViewModel>();
             builder.Services.AddMauiBlazorWebView();
 

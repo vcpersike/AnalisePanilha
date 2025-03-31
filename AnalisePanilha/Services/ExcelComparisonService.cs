@@ -9,7 +9,7 @@ using AnalisePanilha.Shared.Services;
 
 namespace AnalisePanilha.Web.Services
 {
-    public class ExcelComparisonService : IExcelComparisonService
+    public class ExcelComparisonServiceMaui : IExcelComparisonService
     {
         public async Task<List<CellComparisonResult>> CompareExcelFiles(string filePath1, string filePath2)
         {
